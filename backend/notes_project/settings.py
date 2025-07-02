@@ -8,7 +8,7 @@ SECRET_KEY = config('SECRET_KEY', default='django-insecure-change-this-in-produc
 
 DEBUG = config('DEBUG', default=True, cast=bool)
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '34.205.48.219']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -96,8 +96,7 @@ REST_FRAMEWORK = {
 }
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",
-    "http://127.0.0.1:5173",
+    config('FRONTEND_URL', default='http://localhost:5173'),
 ]
 
 CORS_ALLOW_CREDENTIALS = True 
