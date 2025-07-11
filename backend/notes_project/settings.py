@@ -1,6 +1,7 @@
 import os
 from pathlib import Path
 from decouple import config
+from urllib.parse import urlparse
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -8,7 +9,7 @@ SECRET_KEY = config('SECRET_KEY', default='django-insecure-change-this-in-produc
 
 DEBUG = config('DEBUG', default=True, cast=bool)
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '34.205.48.219']
+
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -97,6 +98,21 @@ REST_FRAMEWORK = {
 
 CORS_ALLOWED_ORIGINS = [
     config('FRONTEND_URL', default='http://localhost:5173'),
+    'http://web-frontend-to-do-list-practica.s3-website-us-east-1.amazonaws.com',
 ]
 
-CORS_ALLOW_CREDENTIALS = True 
+ALLOWED_HOSTS = config(
+    'ALLOWED_HOSTS_ENV',
+    default='127.0.0.1,localhost,ELB-web-notes-346791138.us-east-1.elb.amazonaws.com',
+    cast=lambda v: [s.strip() for s in v.split(',')]
+)
+
+if isinstance(CORS_ALLOWED_ORIGINS, list):
+    for origin in CORS_ALLOWED_ORIGINS:
+        # Extrae el hostname de la URL del origen
+        parsed_uri = urlparse(origin)
+        if parsed_uri.hostname not in ALLOWED_HOSTS:
+            ALLOWED_HOSTS.append(parsed_uri.hostname)
+
+
+CORS_ALLOW_CREDENTIALS = True

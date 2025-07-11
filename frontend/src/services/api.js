@@ -1,7 +1,7 @@
 import axios from 'axios'
 
-// URL de la API de Django apuntando a la instancia de EC2 donde esta alojado el backend
-const API_BASE_URL = 'http://34.205.48.219:8000/api'
+
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api'
 
 const api = axios.create({
   baseURL: API_BASE_URL,
